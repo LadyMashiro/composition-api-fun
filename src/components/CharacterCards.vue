@@ -7,13 +7,9 @@
     </div>
     <div class="ui divider"></div>
     <div class="ui container cards">
-      <div
-        v-for="character in charactersOrdered"
-        :key="character.id"
-        class="ui card"
-      >
+      <div v-for="character in charactersOrdered" :key="character.id" class="ui card">
         <div class="image">
-          <img :src="character.image">
+          <img :src="character.image" />
         </div>
         <div class="content">
           <span class="header">{{character.name}}</span>
@@ -21,63 +17,70 @@
             <span class="date">Status: {{character.status}}</span>
           </div>
         </div>
-        <div class="extra content">
-          {{character.species}}
-        </div>
+        <div class="extra content">{{character.species}}</div>
       </div>
     </div>
 
     <div v-if="loadingState === 'loading'">
       Loading characters...
-      <img src="/spinner.svg" alt="loading">
+      <img src="/spinner.svg" alt="loading" />
     </div>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
-  import orderBy from 'lodash.orderby'
-  import {ref} from '@vue/composition-api'
+import axios from "axios";
+import orderBy from "lodash.orderby";
+import { ref } from "@vue/composition-api";
 
-  export default {
-    setup () {
-      const characters = ref([])
-      const loadingState = ref(null)
-      const fetchAllCharacters = () => {
-        loadingState.value = 'loading'
-        axios.get('https://rickandmortyapi.com/api/character')
-          .then(response => {
-            setTimeout(() => {
-              loadingState.value = 'success'
-              characters.value = response.data.results
-            }, 1000)
-          })
-      }
-      return {
-        characters, loadingState, fetchAllCharacters
-      }
-    },
-    data () {
-      return {
-        orderKey: 'id'
-      }
-    },
-    computed: {
-      charactersOrdered() {
-        return orderBy(this.characters, this.orderKey)
-      }
-    },
-    methods: {
-      setOrderKey(key) {
-        this.orderKey = key
-      }
-    },
-    created () {
-      this.fetchAllCharacters()
+const useFetchAllCharacters = () => {
+  const characters = ref([]);
+  const loadingState = ref(null);
+  const fetchAllCharacters = () => {
+    loadingState.value = "loading";
+    axios.get("https://rickandmortyapi.com/api/character").then(response => {
+      setTimeout(() => {
+        loadingState.value = "success";
+        characters.value = response.data.results;
+      }, 1000);
+    });
+  };
+  return {
+    characters,
+    loadingState,
+    fetchAllCharacters
+  };
+};
+
+export default {
+  setup() {
+    const {
+      characters,
+      loadingState,
+      fetchAllCharacters
+    } = useFetchAllCharacters();
+    return { characters, loadingState, fetchAllCharacters };
+  },
+  data() {
+    return {
+      orderKey: "id"
+    };
+  },
+  computed: {
+    charactersOrdered() {
+      return orderBy(this.characters, this.orderKey);
     }
+  },
+  methods: {
+    setOrderKey(key) {
+      this.orderKey = key;
+    }
+  },
+  created() {
+    this.fetchAllCharacters();
   }
+};
 </script>
 
 <style scoped>
-
 </style>
