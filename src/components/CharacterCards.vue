@@ -1,9 +1,11 @@
+
+
 <template>
   <div>
     <div>
       Order by
-      <button class="ui blue button" @click="setOrderKey('name')">Name</button>
-      <button class="ui orange button" @click="setOrderKey('id')">Id</button>
+      <button class="ui blue button" @click="orderElements('name')">Name</button>
+      <button class="ui orange button" @click="orderElements('id')">Id</button>
     </div>
     <div class="ui divider"></div>
     <div class="ui container cards">
@@ -20,8 +22,35 @@
         <div class="extra content">{{character.species}}</div>
       </div>
     </div>
+    <div class="ui divider"></div>
+    <div class="ui container cards">
+      <div v-for="location in locationsOrdered" :key="location.id" class="ui card">
+        <div class="content">
+          <i class="right floated">
+            <div class="ui label">
+              Id
+              <div class="detail">{{location.id}}</div>
+            </div>
+          </i>
+          <span class="header">{{location.name}}</span>
+          <div class="ui divider"></div>
+          <div class="description">
+            <div class="ui labels">
+              <div class="ui yellow label">
+                Type
+                <div class="detail">{{location.type}}</div>
+              </div>
+              <div class="ui yellow label">
+                Dimension
+                <div class="detail">{{location.dimension}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div v-if="loadingState === 'loading'">
+    <div v-if="loadingState === 'loading' || locationLoadingState === 'loading'">
       Loading characters...
       <img src="/spinner.svg" alt="loading" />
     </div>
@@ -29,50 +58,54 @@
 </template>
 
 <script>
-import axios from "axios";
-import orderBy from "lodash.orderby";
-import { ref, computed } from "@vue/composition-api";
-
-const useFetchAllCharacters = () => {
-  const characters = ref([]);
-  const loadingState = ref(null);
-  const fetchAllCharacters = () => {
-    loadingState.value = "loading";
-    axios.get("https://rickandmortyapi.com/api/character").then(response => {
-      setTimeout(() => {
-        loadingState.value = "success";
-        characters.value = response.data.results;
-      }, 1000);
-    });
-  };
-  return {
-    characters,
-    loadingState,
-    fetchAllCharacters
-  };
-};
-
-const useOrdering = elements => {
-  const orderKey = ref('id')
-  const setOrderKey = (key) => {
-    orderKey.value = key
-  }
-  const orderedElements = computed(() => orderBy(elements.value, orderKey.value))
-  return {
-    orderedElements,
-    orderKey,
-    setOrderKey
-  };
-};
-
+import useFetchResource from "../use/useFetchResource";
+import useOrdering from "../use/useOrdering";
 export default {
-  setup () {
-    const {loadingState, characters, fetchAllCharacters} = useFetchAllCharacters()
-    const {orderedElements: charactersOrdered, orderKey, setOrderKey} = useOrdering(characters)
-    return {loadingState, characters, fetchAllCharacters, charactersOrdered, setOrderKey, orderKey}
+  setup() {
+    const {
+      elements: characters,
+      loadingState,
+      fetchResource: fetchAllCharacters
+    } = useFetchResource("https://rickandmortyapi.com/api/character");
+    const {
+      elements: locations,
+      loadingState: locationLoadingState,
+      fetchResource: fetchAllLocations
+    } = useFetchResource("https://rickandmortyapi.com/api/location");
+    const {
+      orderedElements: charactersOrdered,
+      orderKey,
+      setOrderKey
+    } = useOrdering(characters);
+    const {
+      orderedElements: locationsOrdered,
+      orderKey: locationOrderKey,
+      setOrderKey: setLocationOrderKey
+    } = useOrdering(locations);
+    return {
+      characters,
+      loadingState,
+      fetchAllCharacters,
+      charactersOrdered,
+      orderKey,
+      setOrderKey,
+      locations,
+      locationLoadingState,
+      fetchAllLocations,
+      locationsOrdered,
+      locationOrderKey,
+      setLocationOrderKey
+    };
   },
   created() {
     this.fetchAllCharacters();
+    this.fetchAllLocations();
+  },
+  methods: {
+    orderElements(key) {
+      this.setOrderKey(key);
+      this.setLocationOrderKey(key);
+    }
   }
 };
 </script>
