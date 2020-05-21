@@ -71,14 +71,6 @@ export default {
     const {orderedElements: charactersOrdered, setOrderKey} = useOrdering(characters)
     return {loadingState, characters, fetchAllCharacters, charactersOrdered, setOrderKey}
   },
-  data() {
-    return {
-    };
-  },
-  computed: {
-  },
-  methods: {
-  },
   created() {
     this.fetchAllCharacters();
   }
