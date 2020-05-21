@@ -64,7 +64,7 @@ import useGlobalEvent from "../use/useGlobalEvent"
 
 export default {
   setup() {
-    const {event} = useGlobalEvent('keydown', () => {
+    useGlobalEvent('keydown', () => {
       console.log('remove character')
       characters.value.shift()
     })
@@ -102,8 +102,7 @@ export default {
       fetchAllLocations,
       locationsOrdered,
       locationOrderKey,
-      setLocationOrderKey,
-      event
+      setLocationOrderKey
     };
   },
   created() {
