@@ -60,8 +60,15 @@
 <script>
 import useFetchResource from "../use/useFetchResource";
 import useOrdering from "../use/useOrdering";
+import useGlobalEvent from "../use/useGlobalEvent"
+
 export default {
   setup() {
+    const {event} = useGlobalEvent('keydown', () => {
+      console.log('remove character')
+      characters.value.shift()
+    })
+
     const {
       elements: characters,
       loadingState,
@@ -82,6 +89,7 @@ export default {
       orderKey: locationOrderKey,
       setOrderKey: setLocationOrderKey
     } = useOrdering(locations);
+
     return {
       characters,
       loadingState,
@@ -94,7 +102,8 @@ export default {
       fetchAllLocations,
       locationsOrdered,
       locationOrderKey,
-      setLocationOrderKey
+      setLocationOrderKey,
+      event
     };
   },
   created() {
