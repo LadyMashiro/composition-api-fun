@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <div>
+    <div class="ui container">
       Order by
       <button class="ui blue button" @click="orderElements('name')">Name</button>
       <button class="ui orange button" @click="orderElements('id')">Id</button>
@@ -65,8 +65,10 @@ import useGlobalEvent from "../use/useGlobalEvent"
 export default {
   setup() {
     useGlobalEvent('keydown', () => {
-      console.log('remove character')
-      characters.value.shift()
+      if(event.code !== 'Space') {
+        console.log('remove character')
+        characters.value.shift()
+      }
     })
 
     const {
