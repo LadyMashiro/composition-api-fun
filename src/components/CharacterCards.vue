@@ -68,8 +68,8 @@ const useOrdering = elements => {
 export default {
   setup () {
     const {loadingState, characters, fetchAllCharacters} = useFetchAllCharacters()
-    const {orderedElements: charactersOrdered, setOrderKey} = useOrdering(characters)
-    return {loadingState, characters, fetchAllCharacters, charactersOrdered, setOrderKey}
+    const {orderedElements: charactersOrdered, orderKey, setOrderKey} = useOrdering(characters)
+    return {loadingState, characters, fetchAllCharacters, charactersOrdered, setOrderKey, orderKey}
   },
   created() {
     this.fetchAllCharacters();
