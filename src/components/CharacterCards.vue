@@ -31,7 +31,7 @@
 <script>
 import axios from "axios";
 import orderBy from "lodash.orderby";
-import { ref } from "@vue/composition-api";
+import { ref, computed } from "@vue/composition-api";
 
 const useFetchAllCharacters = () => {
   const characters = ref([]);
@@ -52,29 +52,32 @@ const useFetchAllCharacters = () => {
   };
 };
 
+const useOrdering = elements => {
+  const orderKey = ref('id')
+  const setOrderKey = (key) => {
+    orderKey.value = key
+  }
+  const orderedElements = computed(() => orderBy(elements.value, orderKey.value))
+  return {
+    orderedElements,
+    orderKey,
+    setOrderKey
+  };
+};
+
 export default {
-  setup() {
-    const {
-      characters,
-      loadingState,
-      fetchAllCharacters
-    } = useFetchAllCharacters();
-    return { characters, loadingState, fetchAllCharacters };
+  setup () {
+    const {loadingState, characters, fetchAllCharacters} = useFetchAllCharacters()
+    const {orderedElements: charactersOrdered, setOrderKey} = useOrdering(characters)
+    return {loadingState, characters, fetchAllCharacters, charactersOrdered, setOrderKey}
   },
   data() {
     return {
-      orderKey: "id"
     };
   },
   computed: {
-    charactersOrdered() {
-      return orderBy(this.characters, this.orderKey);
-    }
   },
   methods: {
-    setOrderKey(key) {
-      this.orderKey = key;
-    }
   },
   created() {
     this.fetchAllCharacters();
