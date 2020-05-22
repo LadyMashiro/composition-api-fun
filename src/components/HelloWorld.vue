@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <h1 class="ui header">{{ msg }}</h1>
       <VideoPlayer />
       <CharacterCards />
   </div>
@@ -15,9 +14,6 @@ export default {
   components: {
     CharacterCards,
     VideoPlayer
-  },
-  props: {
-    msg: String
   },
   data () {
     return {

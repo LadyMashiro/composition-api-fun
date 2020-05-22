@@ -1,7 +1,27 @@
 <template>
   <div class="ui container">
-    <video ref="video" loop muted playsinline src="/puppiness.mp4" width="600"></video>
-    <button class="ui blue button" @click="toggleVideo">Click</button>
+    <h1 class="ui header">Cuteness overload</h1>
+    <div class="ui two column grid">
+      <div class="column">
+        <video
+          class="ui rounded"
+          ref="video"
+          loop
+          muted
+          playsinline
+          src="/puppiness.mp4"
+          width="600"
+        ></video>
+      </div>
+      <div class="four column row">
+        <div class="column">
+          <button class="ui blue button" @click="toggleVideo">Click</button>
+        </div>
+        <div class="column">
+          <i>Use Space or the button on the left to play or pause the video.</i>
+        </div>
+      </div>
+    </div>
     <div class="ui divider"></div>
   </div>
 </template>
@@ -13,36 +33,29 @@ export default {
   setup(props, context) {
     const toggleVideo = () => {
       const video = context.refs.video;
-      video.paused ? video.play() : video.pause()
-    }
+      video.paused ? video.play() : video.pause();
+    };
 
     useGlobalEvent("keydown", e => {
       e.preventDefault();
-      console.log(event.code)
+      console.log(event.code);
       // keydown event
       if (e.code === "Space") {
-        toggleVideo()
+        toggleVideo();
       }
     });
-    return {toggleVideo}
+    return { toggleVideo };
   },
   computed: {
     videoPaused() {
       return this.$refs.video.paused ? true : false;
     }
-  },
-  methods: {
-    /*toggleVideo() {
-      const video = this.$refs.video;
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    }*/
   }
 };
 </script>
 
 <style>
+.rounded {
+  border-radius: 10px;
+}
 </style>
