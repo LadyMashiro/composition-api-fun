@@ -32,9 +32,12 @@ module.exports = {
         sans: ['Inter var','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue'],
         mono: ['Blokletters Balpen'],
         display: ['Blokletters Viltstift']
+      },
+      boxShadow: {
+        pink: '0 0 0 3px rgba(235, 123, 148, 0.5)',
       }
     }
   },
-  variants: { fontFamily: ['responsive', 'hover', 'focus'] },
+  variants: { fontFamily: ['responsive', 'hover', 'focus'], boxShadow: ['responsive', 'hover', 'focus'] },
   plugins: []
 }

@@ -1,8 +1,8 @@
 <template>
-  <div class="ui container">
-    <h1 class="ui header">Cuteness overload</h1>
-    <div class="ui two column grid">
-      <div class="column">
+  <div class="mb-6">
+    <h1 class="text-3xl mb-3">Cuteness overload</h1>
+    <div class="grid grid-cols-2 gap-3">
+      <div>
         <video
           class="ui rounded"
           ref="video"
@@ -13,16 +13,16 @@
           width="600"
         ></video>
       </div>
-      <div class="four column row">
-        <div class="column">
-          <button class="ui blue button" @click="toggleVideo">Click</button>
-        </div>
-        <div class="column">
-          <i>Use Space or the button on the left to play or pause the video.</i>
-        </div>
+      <div class="flex flex-col items-center justify-center">
+        <i
+          class="italic text-gray-600"
+        >Use Space or the button on the left to play or pause the video.</i>
+        <button
+          class="bg-gray-400 rounded-sm px-3 py-1 focus:outline-none focus:shadow-outline"
+          @click="toggleVideo"
+        >Click</button>
       </div>
     </div>
-    <div class="ui divider"></div>
   </div>
 </template>
 
@@ -53,9 +53,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.rounded {
-  border-radius: 10px;
-}
-</style>

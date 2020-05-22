@@ -2,73 +2,65 @@
 
 <template>
   <div>
-    <div class="ui container">
-      <h1 class="ui header">Rick & Morty Characters and Locations</h1>
+    <h1 class="text-3xl mb-3">Rick & Morty Characters and Locations</h1>
+    <div>
+      <i
+        class="italic text-gray-600"
+      >By clicking any key except for Space, the first character will be removed.</i>
+    </div>
+    <div>
+      Order by
+      <button
+        :class="[orderKey === 'name'? 'bg-gray-400 text-gray-900':'bg-gray-200 text-gray-600', 'm-3 rounded-sm px-3 py-1 focus:outline-none focus:shadow-outline']"
+        @click="orderElements('name')"
+      >Name</button>
+      <button
+        :class="[orderKey === 'id'? 'bg-gray-400 text-gray-900':'bg-gray-200 text-gray-600', 'rounded-sm px-3 py-1 focus:outline-none focus:shadow-outline']"
+        @click="orderElements('id')"
+      >Id</button>
+    </div>
 
-      <div class="ui column grid">
-        <div class="column">
-          Order by
-          <button class="ui blue button" @click="orderElements('name')">Name</button>
-          <button class="ui orange button" @click="orderElements('id')">Id</button>
-        </div>
-      </div>
-      <div class="ui container cards">
-        <div v-for="character in charactersOrdered" :key="character.id" class="ui card">
-          <div class="image">
-            <img :src="character.image" />
+    <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+        <div
+          v-for="character in charactersOrdered"
+          :key="character.id"
+          class="rounded border-xl border-gray-300 shadow-md relative"
+        >
+          <img :src="character.image" class="rounded-t-md" />
+          <div class="p-3">
+            <p class="font-medium">{{character.name}}</p>
+            <p class="text-gray-700 text-sm">Status: {{character.status}}</p>
+            <p class="text-gray-700 text-sm">Species: {{character.species}}</p>
           </div>
-          <div class="content">
-            <i class="right floated">
-              <div class="ui label">
-                Id
-                <div class="detail">{{character.id}}</div>
-              </div>
-            </i>
-            <span class="header">{{character.name}}</span>
-            <div class="meta">
-              <span class="date">Status: {{character.status}}</span>
-            </div>
-          </div>
-          <div class="extra content">{{character.species}}</div>
-        </div>
-      </div>
-      <div v-if="loadingState === 'loading'">
-        <h1 class="ui header centered">Loading characters...</h1>
-        <div class="ui active centered inline loader"></div>
-      </div>
-      <div class="ui container cards">
-        <div v-for="location in locationsOrdered" :key="location.id" class="ui card">
-          <div class="content">
-            <i class="right floated">
-              <div class="ui label">
-                Id
-                <div class="detail">{{location.id}}</div>
-              </div>
-            </i>
-            <span class="header">{{location.name}}</span>
-            <div class="ui divider"></div>
-            <div class="description">
-              <div class="ui labels">
-                <div class="ui yellow label">
-                  Type
-                  <div class="detail">{{location.type}}</div>
-                </div>
-                <div class="ui yellow label">
-                  Dimension
-                  <div class="detail">{{location.dimension}}</div>
-                </div>
-              </div>
-            </div>
+          <div
+            class="absolute bottom-0 rounded-tl rounded-br right-0 h-5 text-center w-8 bg-gray-200 text-xs text-gray-600"
+          >
+            <p class="relative align-center">#{{character.id}}</p>
           </div>
         </div>
       </div>
-
-      <div v-if="locationLoadingState === 'loading'">
-        <h1 class="ui header centered">Loading locations...</h1>
-        <div class="ui active centered inline loader"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+        <div
+          v-for="location in locationsOrdered"
+          :key="location.id"
+          class="rounded border-gray-300 shadow-md relative"
+        >
+          <div class="bg-gray-200 rounded-t">
+            <p class="px-3 py-1 font-medium">{{location.name}}</p>
+          </div>
+          <div class="p-3">
+            <p class="text-gray-700 text-sm">Type: {{location.type}}</p>
+            <p class="text-gray-700 text-sm">Dimension: {{location.dimension}}</p>
+          </div>
+          <div
+            class="absolute bottom-0 rounded-tl rounded-br right-0 h-5 text-center w-8 bg-gray-200 text-xs text-gray-600"
+          >
+            <p class="relative align-center">#{{location.id}}</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="ui divider"></div>
   </div>
 </template>
 

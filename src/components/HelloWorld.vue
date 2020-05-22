@@ -1,24 +1,24 @@
 <template>
-  <div class="hello">
-      <VideoPlayer />
-      <CharacterCards />
+  <div>
+    <VideoPlayer />
+    <CharacterCards />
   </div>
 </template>
 
 <script>
-import CharacterCards from './CharacterCards'
-import VideoPlayer from './VideoPlayer'
+import CharacterCards from "./CharacterCards";
+import VideoPlayer from "./VideoPlayer";
 
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   components: {
     CharacterCards,
     VideoPlayer
   },
-  data () {
+  data() {
     return {
       ids: [99]
-    }
+    };
   }
-}
+};
 </script>
